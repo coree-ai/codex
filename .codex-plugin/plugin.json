@@ -1,0 +1,31 @@
+{
+  "name": "coree",
+  "version": "0.13.0-1",
+  "description": "Persistent memory and code intelligence for AI agents - stores decisions, discoveries, and gotchas across sessions using local vector + BM25 search.",
+  "author": {
+    "name": "Michael Alexander",
+    "url": "https://github.com/coree-ai/coree"
+  },
+  "repository": "https://github.com/coree-ai/codex",
+  "license": "Apache-2.0",
+  "keywords": [
+    "memory",
+    "persistence",
+    "mcp",
+    "agent"
+  ],
+  "mcpServers": "./.mcp.json",
+  "interface": {
+    "displayName": "Coree",
+    "developerName": "Michael Alexander",
+    "category": "Development",
+    "shortDescription": "Persistent memory and code intelligence across sessions.",
+    "longDescription": "Coree gives Codex persistent memory and hybrid code search. It stores architectural decisions, gotchas, and discoveries in a local vector + BM25 database and injects the most relevant context into each session automatically.",
+    "websiteURL": "https://github.com/coree-ai/coree",
+    "capabilities": [
+      "Memory",
+      "Code Intelligence",
+      "MCP"
+    ]
+  }
+}

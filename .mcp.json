@@ -1,0 +1,18 @@
+{
+  "mcpServers": {
+    "coree": {
+      "command": "npx",
+      "args": ["--yes", "@coree-ai/coree@0.13.0", "serve"],
+      "env_vars": [
+        "COREE__MEMORY__REMOTE_AUTH_TOKEN",
+        "COREE__MEMORY__REMOTE_URL",
+        "COREE__INDEX__REMOTE_AUTH_TOKEN",
+        "COREE__INDEX__REMOTE_URL",
+        "COREE_BINARY_OVERRIDE",
+        "COREE_MODEL_DIR"
+      ],
+      "startup_timeout_sec": 120,
+      "tool_timeout_sec": 120
+    }
+  }
+}
