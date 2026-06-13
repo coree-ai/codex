@@ -19,19 +19,23 @@ codex plugin install coree
 ## Sandbox configuration
 
 Codex sandboxes MCP server processes. Coree needs network access (for first-run
-model download and remote sync) and filesystem write access (for its database and
-model cache). Add this to `~/.codex/config.toml`, substituting your username:
+model download and remote sync) and filesystem write access (for its database,
+model cache, and npx cache). Add this to `~/.codex/config.toml`, substituting
+your username and paths:
 
 ```toml
 [sandbox_workspace_write]
 network_access = true
 writable_roots = [
   "/home/you/.cache/coree",
-  "/home/you/.local/share/coree"
+  "/home/you/.local/share/coree",
+  "/home/you/.npm/_npx",
+  "/home/you/.npm/_cacache"
 ]
 ```
 
-Use absolute paths - `~` expansion is not reliable in TOML.
+Use absolute paths - `~` expansion is not reliable in TOML. If your npm cache
+lives elsewhere (e.g. `$XDG_CACHE_HOME` / `$XDG_DATA_HOME`), adjust accordingly.
 
 ## Environment variables
 
@@ -46,18 +50,11 @@ them if they are present in your shell environment.
 
 ## Hooks
 
-> **Note**: Codex does not yet support installing hooks from plugins. The session
-> context injection hooks must be added manually.
-
-Add the following to your `~/.codex/config.toml` to enable session injection:
-
-```toml
-[hooks.SessionStart]
-command = "npx --yes @coree-ai/coree@0.13.0 inject --type session"
-
-[hooks.UserPromptSubmit]
-command = "npx --yes @coree-ai/coree@0.13.0 inject --type prompt"
-```
+> **Note**: Codex hooks (`[hooks.*]` in `config.toml`) could push coree context
+> into the model at session start and before each prompt, but the schema is not
+> yet verified against a live Codex host. Until verified, the agent-pull approach
+> (steering doc instructs the agent to call `session_context()` / `search()`)
+> is the supported model. See [AGENTS.md](./AGENTS.md).
 
 ## Verify
 
