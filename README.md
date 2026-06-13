@@ -53,10 +53,10 @@ Add the following to your `~/.codex/config.toml` to enable session injection:
 
 ```toml
 [hooks.SessionStart]
-command = "npx --yes @coree-ai/coree@0.13.0 inject --type session --budget 8000"
+command = "npx --yes @coree-ai/coree@0.13.0 inject --type session"
 
 [hooks.UserPromptSubmit]
-command = "npx --yes @coree-ai/coree@0.13.0 inject --type prompt --budget 8000"
+command = "npx --yes @coree-ai/coree@0.13.0 inject --type prompt"
 ```
 
 ## Verify
