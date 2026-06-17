@@ -22,7 +22,8 @@ jobs:
 
       - name: Validate JSON files
         run: |
-          node -e "JSON.parse(require('fs').readFileSync('.codex-plugin/plugin.json', 'utf8'))"
-          node -e "JSON.parse(require('fs').readFileSync('.codex-plugin/marketplace.json', 'utf8'))"
-          node -e "JSON.parse(require('fs').readFileSync('.mcp.json', 'utf8'))"
+          node -e "JSON.parse(require('fs').readFileSync('.agents/plugins/marketplace.json', 'utf8'))"
+          node -e "JSON.parse(require('fs').readFileSync('plugins/coree/.codex-plugin/plugin.json', 'utf8'))"
+          node -e "JSON.parse(require('fs').readFileSync('plugins/coree/.mcp.json', 'utf8'))"
+          node -e "JSON.parse(require('fs').readFileSync('plugins/coree/hooks/hooks.json', 'utf8'))"
           echo "All JSON files are valid"

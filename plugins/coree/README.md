@@ -1,9 +1,14 @@
 # Coree Codex Plugin
 
-[Coree](https://github.com/coree-ai/coree) provides persistent memory and code intelligence for AI agents. This plugin integrates Coree into the OpenAI Codex CLI as an MCP server.
+[Coree](https://github.com/coree-ai/coree) provides persistent memory and code
+intelligence for AI agents. This plugin integrates Coree into Codex.
 
 ## Features
 
+- **MCP Server**: Registers the coree MCP server in Codex.
+- **Automatic context injection**: Injects session context at startup, prompt
+  suggestions before each user prompt, and fresh session context after
+  compaction through Codex's compact session-start trigger.
 - **Persistent Memory**: Stores decisions, architectural discoveries, and gotchas across sessions.
 - **Code Intelligence**: Hybrid search over source code and git history.
 
@@ -12,8 +17,8 @@
 Register the marketplace source and install the plugin:
 
 ```bash
-codex plugin marketplace add github:coree-ai/codex
-codex plugin install coree
+codex plugin marketplace add coree-ai/codex --ref main
+codex plugin add coree@coree
 ```
 
 ## Sandbox configuration
@@ -48,13 +53,29 @@ your shell so Codex forwards them to the MCP process:
 The plugin's `.mcp.json` already lists these in `env_vars` so Codex will forward
 them if they are present in your shell environment.
 
+## Data storage
+
+By default, coree stores its memory database, code index, model cache, and logs
+locally under coree's configured data directories. If remote sync environment
+variables are configured, coree can sync memory and index data to those remote
+databases.
+
 ## Hooks
 
-> **Note**: Codex hooks (`[hooks.*]` in `config.toml`) could push coree context
-> into the model at session start and before each prompt, but the schema is not
-> yet verified against a live Codex host. Until verified, the agent-pull approach
-> (steering doc instructs the agent to call `session_context()` / `search()`)
-> is the supported model. See [AGENTS.md](./AGENTS.md).
+The plugin bundles `hooks/hooks.json`. Codex loads these hooks from enabled
+plugins:
+
+- `SessionStart`: runs `coree inject --type session`
+- `UserPromptSubmit`: runs `coree inject --type prompt`
+
+The hook commands wrap coree's raw text output in Codex's
+`hookSpecificOutput.additionalContext` JSON envelope with the required
+`hookEventName` field. `Stop` currently returns an empty JSON response to avoid
+triggering an unverified stop-continuation loop.
+
+Codex requires hook trust review before non-managed command hooks run. Use
+`/hooks` in Codex to review and trust the coree hooks after installing or
+updating the plugin.
 
 ## Verify
 
@@ -69,7 +90,8 @@ initialisation errors.
 
 ## Usage
 
-Once installed, Coree provides MCP tools. Ask Codex to search your codebase or memories:
+Once installed, Coree automatically injects relevant context. It also provides
+MCP tools. Ask Codex to search your codebase or memories:
 
 ```
 search for how the indexing works

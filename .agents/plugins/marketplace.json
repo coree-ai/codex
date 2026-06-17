@@ -1,0 +1,20 @@
+{
+  "name": "coree",
+  "interface": {
+    "displayName": "Coree"
+  },
+  "plugins": [
+    {
+      "name": "coree",
+      "source": {
+        "source": "local",
+        "path": "./plugins/coree"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Developer Tools"
+    }
+  ]
+}
