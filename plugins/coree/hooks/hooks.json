@@ -30,7 +30,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "node -e 'process.stdout.write(\"{}\")'",
+            "command": "node -e 'const fs=require(\"node:fs\"),cp=require(\"node:child_process\");const t=process.argv[1];let input=\"\";try{input=fs.readFileSync(0,\"utf8\")}catch{}let r={stdout:\"\"};try{r=cp.spawnSync(\"npx\",[\"--yes\",\"@coree-ai/coree@0.15.0\",\"inject\",\"--type\",t],{input,encoding:\"utf8\",timeout:115000,maxBuffer:1024*1024*8})}catch{}const text=(r.stdout||\"\").trim();if(!text){process.stdout.write(\"{}\")}else{process.stdout.write(JSON.stringify({decision:\"block\",reason:text}))}' stop",
             "timeout": 120,
             "statusMessage": "Checking coree memory"
           }

@@ -11,6 +11,8 @@ intelligence for AI agents. This plugin integrates Coree into Codex.
   compaction through Codex's compact session-start trigger.
 - **Persistent Memory**: Stores decisions, architectural discoveries, and gotchas across sessions.
 - **Code Intelligence**: Hybrid search over source code and git history.
+- **Stop hook checkpoint**: Runs the end-of-turn coree checkpoint before the
+  session ends.
 
 ## Installation
 
@@ -70,8 +72,10 @@ plugins:
 
 The hook commands wrap coree's raw text output in Codex's
 `hookSpecificOutput.additionalContext` JSON envelope with the required
-`hookEventName` field. `Stop` currently returns an empty JSON response to avoid
-triggering an unverified stop-continuation loop.
+`hookEventName` field. `Stop` uses Codex's Stop-specific continuation contract:
+if coree emits checkpoint text, the hook returns `decision: "block"` with that
+text as `reason`; otherwise it returns `{}`. Codex uses the reason as a
+continuation prompt.
 
 Codex requires hook trust review before non-managed command hooks run. Use
 `/hooks` in Codex to review and trust the coree hooks after installing or
